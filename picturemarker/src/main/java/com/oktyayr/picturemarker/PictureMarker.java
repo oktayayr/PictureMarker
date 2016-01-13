@@ -396,7 +396,12 @@ public class PictureMarker {
         cornerRadiusPx = cornerRadius * density;
 
         // Create objects
-        output = Bitmap.createBitmap((int) (imageSizePx + (2 * borderWidthPx)), (int) (imageSizePx + (2 * borderWidthPx) + cursorHeightPx), Bitmap.Config.ARGB_8888);
+        if (markerStyle.equals(MarkerStyle.SQUARE)) {
+            output = Bitmap.createBitmap((int) (imageSizePx + (2 * borderWidthPx)), (int) (imageSizePx + borderWidthPx + cursorHeightPx), Bitmap.Config.ARGB_8888);
+        } else {
+            output = Bitmap.createBitmap((int) (imageSizePx + (2 * borderWidthPx)),
+                    (int) ((imageSizePx / 2) + borderWidthPx + cursorHeightPx + MathUtils.calculateSide(imageSizePx / 2, cursorWidthPx / 2)), Bitmap.Config.ARGB_8888);
+        }
         canvas = new Canvas(output);
         paint = new Paint();
 
