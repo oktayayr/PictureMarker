@@ -25,9 +25,11 @@ import com.oktyayr.picturemarker.util.MathUtils;
 /**
  * Picture Marker is marker that can contains image inside in.
  *
- * @author Oktay AYAR <11.1.2016>
+ * @author Oktay AYAR
  * @version 1.0.0
  * @since 1.0.0
+ * <br>
+ * Date: 11.01.2016
  */
 public class PictureMarker {
     private final String LOG_TAG = PictureMarker.class.getSimpleName();
@@ -104,7 +106,7 @@ public class PictureMarker {
      * Creates {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} according to properties
      *
      * @param context {@link android.content.Context Context} instance to obtain screen density
-     * @return {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} of {@link PictureMarker PictureMarker}
+     * @return {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} of {@link com.oktyayr.picturemarker.PictureMarker PictureMarker}
      * @throws InvalidDimensionException when cursor width is wider than image size
      * @throws NullImageException        when marker image is null
      * @throws NullImageModeException    when image mode is null.
@@ -154,11 +156,11 @@ public class PictureMarker {
 
 
     /**
-     * Creates marker options and puts marker into given {@link GoogleMap GoogleMap}
+     * Creates marker options and puts marker into given {@link com.google.android.gms.maps.GoogleMap GoogleMap}
      *
      * @param context {@link android.content.Context Context} instance to obtain screen density
-     * @param map     {@link GoogleMap GoogleMap} that marker is put into
-     * @return {@link Marker Marker} that is put into map
+     * @param map     {@link com.google.android.gms.maps.GoogleMap GoogleMap} that marker is put into
+     * @return {@link com.google.android.gms.maps.model.Marker Marker} that is put into map
      * @throws InvalidDimensionException when cursor width is wider than image size
      * @throws NullImageException        when marker image is null
      * @throws NullImageModeException    when image mode is null.
@@ -275,7 +277,7 @@ public class PictureMarker {
 
     /**
      * Sets image size. (in dp)
-     * <br/>
+     * <br>
      * <b>Warning: this method set cursor width and height to default</b>
      *
      * @param imageSize the image size

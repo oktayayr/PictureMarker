@@ -13,9 +13,11 @@ import android.graphics.Xfermode;
 /**
  * GraphicUtils contains methods for image processing
  *
- * @author  Oktay AYAR <11.1.2016>
+ * @author  Oktay AYAR
  * @version 1.0.0
  * @since 1.0.0
+ *
+ * Date: 12.01.2016
  */
 public class GraphicsUtil {
     /**
