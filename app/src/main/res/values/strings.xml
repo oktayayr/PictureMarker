@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Picture Marker Demo</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_demo">Picture Marker Demo</string>
+</resources>
