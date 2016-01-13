@@ -64,8 +64,8 @@ public class DemoActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng lAnkara=new LatLng(39.93,32.85);
 
         try {
-            mMap.addMarker(mAnkara.create(this).position(lAnkara));
-            mMap.addMarker(mIstanbul.create(this).position(lIstanbul));
+            mMap.addMarker(mAnkara.create(this).position(lAnkara).snippet("This is Ankara"));
+            mMap.addMarker(mIstanbul.create(this).position(lIstanbul).snippet("This is Istanbul"));
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(lIstanbul));
         } catch (Exception e) {
