@@ -36,7 +36,7 @@ PictureMarker provides Marker for Google Map Android API that can contain pictur
 ```groovy
 dependencies {
   // jCenter
-  compile 'com.oktyayr.picturemarker:picturemarker:1.0.0'
+  compile 'com.oktyayr.picturemarker:picturemarker:1.0.1'
 }
 ```
 
