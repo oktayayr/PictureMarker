@@ -8,7 +8,7 @@ PictureMarker provides Marker for Google Map Android API that can contain pictur
 
 ##Features
 
-* PictureMarker is density depended. You can create markers compatible with different device screen
+* PictureMarker is density independed. You can create markers that are compatible with different device screen
 * You can create markers with two different shape: Circle and Square
 * You can place image with three different mode: Strech, Center Zoom and Fit
 
