@@ -72,7 +72,7 @@ public class PictureMarker {
         scrapAreaColor = Color.WHITE;
 
         imageSize = 25.0f;
-        borderWidth = 2.5f;
+        borderWidth = 2.0f;
         cornerRadius = 2.0f;
 
         cursorHeight = imageSize / 2;
@@ -363,7 +363,7 @@ public class PictureMarker {
         this.cursorWidth = cursorWidth;
     }
 
-    public Bitmap createMarkerBitmap(float density) throws InvalidDimensionException, NullImageException,
+    private Bitmap createMarkerBitmap(float density) throws InvalidDimensionException, NullImageException,
             NullImageModeException, NullMarkerStyleException {
 
         // Check for requirements
