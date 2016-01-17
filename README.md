@@ -8,11 +8,14 @@ PictureMarker provides Marker for Google Map Android API that can contain pictur
 
 ##Features
 
+* Marker icon can be created from a view or bitmap
 * PictureMarker is density independed. You can create markers that are compatible with different device screen
-* You can create markers with two different shape: Circle and Square
-* You can place image with three different mode: Strech, Center Zoom and Fit
+* You can create markers with two different shape: Circle and Square (It is available when marker is created with a bitmap)
+* You can place image with three different mode: Strech, Center Zoom and Fit (It is available when marker is created with a bitmap)
 
 ##Attributes
+
+**These attributes are used when marker icon is created from a bitmap**
 
 ###Dimensions
 **All dimension attributes are in density independed. You should set these attributes in dp**
@@ -42,10 +45,15 @@ dependencies {
 
 ##Usage
 
-###Create simple marker
+###Create marker with view
 ```java
-  PictureMarker pm = new PictureMarker(image);
-  MarkerOptions opt = pm.create(context); // You must provide context object to create marker options
+  PictureMarker pm = new PictureMarker(view);
+  MarkerOptions opt = pm.build();
+```
+###Create marker with bitmap
+```java
+  PictureMarker pm = new PictureMarker(context,bitmap); // A context instance must be provided in order to get screen density
+  MarkerOptions opt = pm.build();
 ```
 
 ###Customize marker
@@ -57,27 +65,14 @@ dependencies {
   
   MarkerOptions opt = pm.create(context);
 ```
-###Change existing marker options
-```java
-  MarkerOptions opt=new MarkerOptions().snipper("This is picture marker");
-  PictureMarker pm = new PictureMarker(image);
-  
-  pm.setMarkerStyle(MarkerStyle.CIRCLE); // Change marker style
-  pm.setImageMode(ImageMode.STRECH); // Change image mode
-  pm.setImageSize(100) // Change image size (in dp)
-  
-  pm.createInto(context,opt);
-```
+##Exceptions
 
-###Put marker directly into map
-```java
-  PictureMarker pm = new PictureMarker(image);
-  pm.setMarkerStyle(MarkerStyle.CIRCLE); // Change marker style
-  pm.setImageMode(ImageMode.STRECH); // Change image mode
-  pm.setImageSize(100) // Change image size (in dp)
-  
-  pm.put(context,map);
-```
+* IllegalStateException is thrown when image and view both are set
+* InvalidDimensionException is thrown when cursor width is wider than image size
+* NullImageException is thrown when marker image is null
+* NullImageModeException is thrown when image mode is null.
+* NullMarkerStyleException is thrown  when marker style is null
+
 
 License
 -------
