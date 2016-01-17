@@ -1,7 +1,6 @@
 package com.oktyayr.picturemarker;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,10 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.oktyayr.picturemarker.exception.InvalidDimensionException;
 import com.oktyayr.picturemarker.exception.NullImageException;
@@ -26,15 +24,18 @@ import com.oktyayr.picturemarker.util.MathUtils;
  * Picture Marker is marker that can contains image inside in.
  *
  * @author Oktay AYAR
- * @version 1.0.0
+ * @version 1.0.2
  * @since 1.0.0
  * <br>
- * Date: 11.01.2016
+ * Date: 17.01.2016
  */
-public class PictureMarker {
+public class PictureMarker{
     private final String LOG_TAG = PictureMarker.class.getSimpleName();
 
+    private Context context;
+
     private Bitmap image;
+    private View iconView;
     private MarkerStyle markerStyle;
     private ImageMode imageMode;
 
@@ -49,18 +50,12 @@ public class PictureMarker {
     private float cursorWidth;
 
     /**
-     * Constructs new Picture Marker with null image
-     */
-    public PictureMarker() {
-        this(null);
-    }
-
-    /**
      * Constructs new Picture Marker with given bitmap
      *
+     * @param context {@link android.content.Context Context} instance to gather screen density
      * @param image Image that will be shown on marker
      */
-    public PictureMarker(Bitmap image) {
+    public PictureMarker(Context context, Bitmap image) {
         // Set bitmap
         this.image = image;
 
@@ -80,99 +75,49 @@ public class PictureMarker {
     }
 
     /**
+     * Instantiates a new Picture marker with given {@link android.view.View View}.
+     *
+     * @param iconView the icon view for marker
+     */
+    public PictureMarker(View iconView) {
+        this.iconView = iconView;
+    }
+
+    /**
      * Creates {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} according to properties
      *
-     * @param screenDensity Device screen density. To obtain density use {@link Resources#getDisplayMetrics()}
-     * @return Marker options
+     * @return {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions}
+     *
+     * @throws IllegalStateException when both image and view are set
      * @throws InvalidDimensionException when cursor width is wider than image size
      * @throws NullImageException        when marker image is null
      * @throws NullImageModeException    when image mode is null.
      * @throws NullMarkerStyleException  when marker style is null
      */
-    public MarkerOptions create(float screenDensity) throws InvalidDimensionException, NullImageException,
-            NullImageModeException, NullMarkerStyleException {
+    public MarkerOptions build() throws InvalidDimensionException, NullImageException,
+            NullImageModeException, NullMarkerStyleException, IllegalStateException {
         // Create marker options
         MarkerOptions opt;
         Bitmap bmp;
 
-        bmp = createMarkerBitmap(screenDensity);
+        if (image != null && iconView != null) {
+            throw new IllegalStateException();
+        } else if (image != null) {
+            float screenDensity;
 
-        opt = new MarkerOptions().anchor(0.5f, 1.0f).icon(BitmapDescriptorFactory.fromBitmap(bmp));
+            screenDensity = context.getResources().getDisplayMetrics().density;
+
+            bmp = createMarkerBitmap(screenDensity);
+
+            opt = new MarkerOptions().anchor(0.5f, 1.0f).icon(BitmapDescriptorFactory.fromBitmap(bmp));
+
+        } else {
+            bmp = viewToBitmap(iconView);
+
+            opt = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bmp));
+        }
 
         return opt;
-    }
-
-    /**
-     * Creates {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} according to properties
-     *
-     * @param context {@link android.content.Context Context} instance to obtain screen density
-     * @return {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} of {@link com.oktyayr.picturemarker.PictureMarker PictureMarker}
-     * @throws InvalidDimensionException when cursor width is wider than image size
-     * @throws NullImageException        when marker image is null
-     * @throws NullImageModeException    when image mode is null.
-     * @throws NullMarkerStyleException  when marker style is null
-     */
-    public MarkerOptions create(Context context) throws InvalidDimensionException, NullImageException,
-            NullImageModeException, NullMarkerStyleException {
-        return create(context.getResources().getDisplayMetrics().density);
-    }
-
-    /**
-     * Creates icon of marker from image and imports it into given {@link MarkerOptions MarkerOptions}
-     *
-     * @param context {@link android.content.Context Context} instance to obtain screen density
-     * @param options Marker options
-     * @throws InvalidDimensionException when cursor width is wider than image size
-     * @throws NullImageException        when marker image is null
-     * @throws NullImageModeException    when image mode is null.
-     * @throws NullMarkerStyleException  when marker style is null
-     */
-    public void createInto(Context context, MarkerOptions options) throws InvalidDimensionException, NullImageException,
-            NullImageModeException, NullMarkerStyleException {
-        float density;
-
-        density = context.getResources().getDisplayMetrics().density;
-
-        createInto(density, options);
-
-    }
-
-    /**
-     * Creates icon of marker from image and imports it into given {@link MarkerOptions MarkerOptions}
-     *
-     * @param density Device screen density
-     * @param options Marker options
-     * @throws InvalidDimensionException when cursor width is wider than image size
-     * @throws NullImageException        when marker image is null
-     * @throws NullImageModeException    when image mode is null.
-     * @throws NullMarkerStyleException  when marker style is null
-     */
-    public void createInto(float density, MarkerOptions options) throws InvalidDimensionException, NullImageException,
-            NullImageModeException, NullMarkerStyleException {
-        options.icon(BitmapDescriptorFactory.fromBitmap(createMarkerBitmap(density)))
-                .anchor(0.5f, 1.0f);
-
-    }
-
-
-    /**
-     * Creates marker options and puts marker into given {@link com.google.android.gms.maps.GoogleMap GoogleMap}
-     *
-     * @param context {@link android.content.Context Context} instance to obtain screen density
-     * @param map     {@link com.google.android.gms.maps.GoogleMap GoogleMap} that marker is put into
-     * @return {@link com.google.android.gms.maps.model.Marker Marker} that is put into map
-     * @throws InvalidDimensionException when cursor width is wider than image size
-     * @throws NullImageException        when marker image is null
-     * @throws NullImageModeException    when image mode is null.
-     * @throws NullMarkerStyleException  when marker style is null
-     */
-    public Marker put(Context context, GoogleMap map) throws InvalidDimensionException, NullImageException,
-            NullImageModeException, NullMarkerStyleException {
-        MarkerOptions opt;
-
-        opt = create(context.getResources().getDisplayMetrics().density);
-
-        return map.addMarker(opt);
     }
 
     /**
@@ -557,5 +502,27 @@ public class PictureMarker {
         }
 
         return output;
+    }
+
+    private Bitmap viewToBitmap(View view) {
+        int spec;
+        Bitmap b, cacheBmp, viewBmp;
+        Canvas c;
+
+        spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(spec, spec);
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        b = Bitmap.createBitmap(view.getMeasuredWidth(),
+                view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        c = new Canvas(b);
+        c.translate(-view.getScrollX(), -view.getScrollY());
+        view.draw(c);
+        view.setDrawingCacheEnabled(true);
+        cacheBmp = view.getDrawingCache();
+
+        viewBmp = cacheBmp.copy(Bitmap.Config.ARGB_8888, true);
+        view.destroyDrawingCache();
+
+        return viewBmp;
     }
 }
