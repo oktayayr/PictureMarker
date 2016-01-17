@@ -1,7 +1,6 @@
 package com.oktyayr.picturemarker;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,12 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.oktyayr.picturemarker.exception.InvalidDimensionException;
 import com.oktyayr.picturemarker.exception.NullImageException;
@@ -28,12 +24,12 @@ import com.oktyayr.picturemarker.util.MathUtils;
  * Picture Marker is marker that can contains image inside in.
  *
  * @author Oktay AYAR
- * @version 1.0.0
+ * @version 1.0.2
  * @since 1.0.0
  * <br>
- * Date: 11.01.2016
+ * Date: 17.01.2016
  */
-public class PictureMarker {
+public class PictureMarker{
     private final String LOG_TAG = PictureMarker.class.getSimpleName();
 
     private Context context;
@@ -56,6 +52,7 @@ public class PictureMarker {
     /**
      * Constructs new Picture Marker with given bitmap
      *
+     * @param context {@link android.content.Context Context} instance to gather screen density
      * @param image Image that will be shown on marker
      */
     public PictureMarker(Context context, Bitmap image) {
@@ -89,7 +86,9 @@ public class PictureMarker {
     /**
      * Creates {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions} according to properties
      *
-     * @return Marker options
+     * @return {@link com.google.android.gms.maps.model.MarkerOptions MarkerOptions}
+     *
+     * @throws IllegalStateException when both image and view are set
      * @throws InvalidDimensionException when cursor width is wider than image size
      * @throws NullImageException        when marker image is null
      * @throws NullImageModeException    when image mode is null.
@@ -115,7 +114,7 @@ public class PictureMarker {
         } else {
             bmp = viewToBitmap(iconView);
 
-            opt = new MarkerOptions().anchor(0.5f, 1.0f).icon(BitmapDescriptorFactory.fromBitmap(bmp));
+            opt = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bmp));
         }
 
         return opt;
