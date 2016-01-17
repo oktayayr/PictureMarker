@@ -56,8 +56,9 @@ public class PictureMarker{
      * @param image Image that will be shown on marker
      */
     public PictureMarker(Context context, Bitmap image) {
-        // Set bitmap
+        // Set properties
         this.image = image;
+        this.context=context;
 
         // Set defaults
         markerStyle = MarkerStyle.SQUARE;
