@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,11 +52,11 @@ public class DemoActivity extends FragmentActivity implements OnMapReadyCallback
         istanbul = BitmapFactory.decodeResource(getResources(), R.drawable.istanbul);
         ankara = BitmapFactory.decodeResource(getResources(), R.drawable.ankara);
 
-        mAnkara=new PictureMarker(ankara);
+        mAnkara=new PictureMarker(LayoutInflater.from(this).inflate(R.layout.icon_layout,null));
         mAnkara.setImageMode(ImageMode.STRECT);
         mAnkara.setImageSize(50);
 
-        mIstanbul=new PictureMarker(istanbul);
+        mIstanbul=new PictureMarker(this,istanbul);
         mIstanbul.setImageSize(50);
         mIstanbul.setMarkerStyle(MarkerStyle.CIRCLE);
 
@@ -64,8 +65,8 @@ public class DemoActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng lAnkara=new LatLng(39.93,32.85);
 
         try {
-            mMap.addMarker(mAnkara.create(this).position(lAnkara).snippet("This is Ankara"));
-            mMap.addMarker(mIstanbul.create(this).position(lIstanbul).snippet("This is Istanbul"));
+            mMap.addMarker(mAnkara.build().position(lAnkara).snippet("This is Ankara"));
+            mMap.addMarker(mIstanbul.build().position(lIstanbul).snippet("This is Istanbul"));
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(lIstanbul));
         } catch (Exception e) {
